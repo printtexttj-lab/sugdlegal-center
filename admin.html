@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SLC Admin Login</title>
+  <title>SLC Admin Dashboard</title>
   <style>
     :root{
       --bg:#f5f1e8;
@@ -12,155 +12,229 @@
       --muted:#6b7280;
       --navy:#14243d;
       --navy2:#1b3153;
-      --gold:#b08a46;
       --line:rgba(20,36,61,.08);
-      --shadow:0 20px 60px rgba(17,24,39,.12);
-      --radius:24px;
+      --shadow:0 20px 60px rgba(17,24,39,.10);
+      --radius:20px;
     }
-
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family:Inter, Arial, sans-serif;
+      font-family:Inter,Arial,sans-serif;
       background:linear-gradient(180deg,#f5f1e8,#fbf9f4);
       color:var(--text);
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
       padding:24px;
     }
-
-    .card{
-      width:100%;
-      max-width:460px;
+    .topbar{
+      max-width:1200px;
+      margin:0 auto 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .title{font-size:28px;font-weight:800}
+    .top-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .logout,.refresh{
+      border:none;
+      background:linear-gradient(135deg,var(--navy),var(--navy2));
+      color:#fff;
+      padding:12px 16px;
+      border-radius:14px;
+      cursor:pointer;
+      font-weight:700;
+    }
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
       background:var(--panel);
       border:1px solid var(--line);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
-      padding:28px;
+      overflow:hidden;
     }
-
-    .logo{
-      width:56px;
-      height:56px;
-      border-radius:18px;
-      display:grid;
-      place-items:center;
-      background:linear-gradient(135deg,var(--navy),var(--navy2));
-      color:#fff;
-      font-weight:900;
-      margin-bottom:18px;
+    .toolbar{
+      padding:16px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
     }
-
-    h1{
-      margin:0 0 8px;
-      font-size:28px;
-    }
-
-    p{
-      margin:0 0 22px;
-      color:var(--muted);
-      line-height:1.6;
-    }
-
-    label{
-      display:block;
-      margin-bottom:14px;
+    .hint{color:var(--muted);font-size:14px}
+    table{width:100%;border-collapse:collapse}
+    th,td{
+      padding:14px;
+      text-align:left;
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
       font-size:14px;
-      font-weight:600;
-      color:#374151;
     }
-
-    input{
-      width:100%;
-      margin-top:8px;
-      padding:14px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      outline:none;
-      font:inherit;
-    }
-
-    input:focus{
-      border-color:rgba(176,138,70,.45);
-      box-shadow:0 0 0 4px rgba(176,138,70,.10);
-    }
-
-    button{
-      width:100%;
-      margin-top:6px;
-      padding:14px;
-      border:none;
-      border-radius:14px;
-      background:linear-gradient(135deg,var(--navy),var(--navy2));
-      color:#fff;
-      font-weight:800;
-      cursor:pointer;
-      font-size:15px;
-    }
-
-    .hint{
-      margin-top:14px;
+    th{
+      background:#14243d;
+      color:white;
       font-size:13px;
-      color:var(--muted);
-      min-height:18px;
+      letter-spacing:.2px;
+    }
+    .actions{display:flex;gap:8px;flex-wrap:wrap}
+    button.action,a.action{
+      border:none;
+      border-radius:10px;
+      padding:8px 10px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:12px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .open{background:#14243d;color:#fff}
+    .new{background:#f3f4f6;color:#111827}
+    .progress{background:#fbbf24;color:#111827}
+    .done{background:#16a34a;color:#fff}
+    .delete{background:#dc2626;color:#fff}
+    .status{font-weight:700;text-transform:capitalize}
+    .empty{padding:20px;color:var(--muted)}
+    @media (max-width:900px){
+      body{padding:12px}
+      .wrap{overflow:auto}
+      table{min-width:1200px}
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="logo">SLC</div>
-    <h1>Admin Panel</h1>
-    <p>Вход только для администратора SLC.</p>
+  <div class="topbar">
+    <div class="title">SLC Admin Dashboard</div>
+    <div class="top-actions">
+      <button class="refresh" id="refreshBtn">Обновить</button>
+      <button class="logout" id="logoutBtn">Выйти</button>
+    </div>
+  </div>
 
-    <form id="loginForm">
-      <label>
-        Логин
-        <input type="text" id="username" required />
-      </label>
+  <div class="wrap">
+    <div class="toolbar">
+      <div class="hint">Все заявки с сайта</div>
+      <div class="hint" id="loadHint">Загружаем...</div>
+    </div>
 
-      <label>
-        Пароль
-        <input type="password" id="password" required />
-      </label>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Клиент</th>
+          <th>Телефон</th>
+          <th>Email</th>
+          <th>Тема</th>
+          <th>Описание</th>
+          <th>Статус</th>
+          <th>Дата</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody id="requestsBody"></tbody>
+    </table>
 
-      <button type="submit">Войти</button>
-      <div class="hint" id="loginHint"></div>
-    </form>
+    <div class="empty" id="emptyState" style="display:none;">Заявок пока нет.</div>
   </div>
 
   <script>
     const API_BASE = "https://slc-telegram.printtexttj.workers.dev";
+    const token = localStorage.getItem("slc_admin_token");
+    if (!token) window.location.href = "admin.html";
 
-    document.getElementById("loginForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("slc_admin_token");
+      window.location.href = "admin.html";
+    });
 
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value.trim();
-      const hint = document.getElementById("loginHint");
+    document.getElementById("refreshBtn").addEventListener("click", () => {
+      loadRequests();
+    });
 
-      hint.textContent = "Проверяем...";
+    async function loadRequests() {
+      const body = document.getElementById("requestsBody");
+      const empty = document.getElementById("emptyState");
+      const hint = document.getElementById("loadHint");
+
+      hint.textContent = "Загружаем...";
 
       try {
-        const res = await fetch(API_BASE + "/admin-login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password })
+        const res = await fetch(API_BASE + "/admin-requests", {
+          headers: { "Authorization": "Bearer " + token }
         });
 
         const data = await res.json();
+        if (!res.ok || !data.ok) throw new Error(data.error || "Load failed");
 
-        if (!res.ok || !data.ok) {
-          throw new Error(data.error || "Login failed");
+        body.innerHTML = "";
+
+        if (!data.requests.length) {
+          empty.style.display = "block";
+          hint.textContent = "Пусто";
+          return;
         }
 
-        localStorage.setItem("slc_admin_token", data.token);
-        window.location.href = "admin-dashboard.html";
+        empty.style.display = "none";
+
+        data.requests.forEach((r) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${r.id}</td>
+            <td>${r.first_name || ""} ${r.last_name || ""}</td>
+            <td>${r.phone || "—"}</td>
+            <td>${r.email || "—"}</td>
+            <td>${r.topic || "—"}</td>
+            <td>${r.message || "—"}</td>
+            <td class="status">${r.status || "new"}</td>
+            <td>${r.created_at || "—"}</td>
+            <td>
+              <div class="actions">
+                <a class="action open" href="case.html?id=${r.id}">Open</a>
+                <button class="action new" onclick="updateStatus(${r.id}, 'new')">New</button>
+                <button class="action progress" onclick="updateStatus(${r.id}, 'in_progress')">In Progress</button>
+                <button class="action done" onclick="updateStatus(${r.id}, 'done')">Done</button>
+                <button class="action delete" onclick="deleteRequest(${r.id})">Delete</button>
+              </div>
+            </td>
+          `;
+          body.appendChild(tr);
+        });
+
+        hint.textContent = "Обновлено";
       } catch (err) {
-        hint.textContent = "Ошибка входа ❌";
+        hint.textContent = "Ошибка загрузки";
       }
-    });
+    }
+
+    async function updateStatus(id, status) {
+      await fetch(API_BASE + "/admin-requests", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ id, status })
+      });
+      loadRequests();
+    }
+
+    async function deleteRequest(id) {
+      if (!confirm("Удалить заявку?")) return;
+
+      await fetch(API_BASE + "/admin-requests", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ id })
+      });
+      loadRequests();
+    }
+
+    loadRequests();
   </script>
 </body>
 </html>
