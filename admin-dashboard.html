@@ -34,6 +34,7 @@
       justify-content:space-between;
       align-items:center;
       gap:12px;
+      flex-wrap:wrap;
     }
 
     .title{
@@ -41,7 +42,13 @@
       font-weight:800;
     }
 
-    .logout{
+    .top-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .logout, .refresh{
       border:none;
       background:linear-gradient(135deg,var(--navy),var(--navy2));
       color:#fff;
@@ -102,19 +109,43 @@
       flex-wrap:wrap;
     }
 
-    button.action{
+    button.action, a.action{
       border:none;
       border-radius:10px;
       padding:8px 10px;
       cursor:pointer;
       font-weight:700;
       font-size:12px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
     }
 
-    .new{background:#f3f4f6}
-    .progress{background:#fbbf24}
-    .done{background:#16a34a;color:#fff}
-    .delete{background:#dc2626;color:#fff}
+    .open{
+      background:#14243d;
+      color:#fff;
+    }
+
+    .new{
+      background:#f3f4f6;
+      color:#111827;
+    }
+
+    .progress{
+      background:#fbbf24;
+      color:#111827;
+    }
+
+    .done{
+      background:#16a34a;
+      color:#fff;
+    }
+
+    .delete{
+      background:#dc2626;
+      color:#fff;
+    }
 
     .status{
       font-weight:700;
@@ -129,14 +160,17 @@
     @media (max-width:900px){
       body{padding:12px}
       .wrap{overflow:auto}
-      table{min-width:1000px}
+      table{min-width:1200px}
     }
   </style>
 </head>
 <body>
   <div class="topbar">
     <div class="title">SLC Admin Dashboard</div>
-    <button class="logout" id="logoutBtn">Выйти</button>
+    <div class="top-actions">
+      <button class="refresh" id="refreshBtn">Обновить</button>
+      <button class="logout" id="logoutBtn">Выйти</button>
+    </div>
   </div>
 
   <div class="wrap">
@@ -178,6 +212,10 @@
       window.location.href = "admin.html";
     });
 
+    document.getElementById("refreshBtn").addEventListener("click", () => {
+      loadRequests();
+    });
+
     async function loadRequests() {
       const body = document.getElementById("requestsBody");
       const empty = document.getElementById("emptyState");
@@ -213,7 +251,7 @@
 
           tr.innerHTML = `
             <td>${r.id}</td>
-            <td>${r.first_name} ${r.last_name}</td>
+            <td>${r.first_name || ""} ${r.last_name || ""}</td>
             <td>${r.phone || "—"}</td>
             <td>${r.email || "—"}</td>
             <td>${r.topic || "—"}</td>
@@ -222,6 +260,7 @@
             <td>${r.created_at || "—"}</td>
             <td>
               <div class="actions">
+                <a class="action open" href="case.html?id=${r.id}">Open</a>
                 <button class="action new" onclick="updateStatus(${r.id}, 'new')">New</button>
                 <button class="action progress" onclick="updateStatus(${r.id}, 'in_progress')">In Progress</button>
                 <button class="action done" onclick="updateStatus(${r.id}, 'done')">Done</button>
