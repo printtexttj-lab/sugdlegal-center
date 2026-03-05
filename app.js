@@ -56,9 +56,6 @@ const dict = {
     noteTitle: "Важно",
     noteText: "В шаге 2 мы сделаем так, чтобы каждая заявка уходила в Telegram-бот."
   },
-
-  // Важно: я сделал таджикский вариант на литературном таджикском.
-  // Если ты хочешь именно «тоҷикии содда» или под конкретный регион — позже подправим.
   tj: {
     tagline: "Итминони ҳуқуқии тиҷорати шумо",
     welcome: "Хуш омадед ба SLC",
@@ -119,7 +116,7 @@ const dict = {
 };
 
 const yearEl = document.getElementById("year");
-yearEl.textContent = new Date().getFullYear();
+if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 const langBtn = document.getElementById("langBtn");
 let lang = localStorage.getItem("slc_lang") || "ru";
@@ -129,38 +126,56 @@ function applyLang(l){
   localStorage.setItem("slc_lang", lang);
   document.documentElement.lang = lang === "ru" ? "ru" : "tg";
 
-  document.querySelectorAll("[data-i18n]").forEach(el=>{
+  document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.getAttribute("data-i18n");
-    if(dict[lang][key]) el.textContent = dict[lang][key];
+    if (dict[lang] && dict[lang][key]) {
+      el.textContent = dict[lang][key];
+    }
   });
 
-  // visual label
-  document.getElementById("langLabel").style.opacity = (lang==="ru") ? "1" : ".55";
-  document.getElementById("langLabel2").style.opacity = (lang==="tj") ? "1" : ".55";
+  const ru = document.getElementById("langLabel");
+  const tj = document.getElementById("langLabel2");
+  if (ru) ru.style.opacity = (lang === "ru") ? "1" : ".55";
+  if (tj) tj.style.opacity = (lang === "tj") ? "1" : ".55";
 }
 
-langBtn.addEventListener("click", ()=>{
-  applyLang(lang === "ru" ? "tj" : "ru");
-});
+if (langBtn) {
+  langBtn.addEventListener("click", () => {
+    applyLang(lang === "ru" ? "tj" : "ru");
+  });
+}
 
 applyLang(lang);
 
-// simple “fake submit” for step 1
 const form = document.getElementById("leadForm");
 const hint = document.getElementById("formHint");
-form.addEventListener("submit", (e)=>{
-  e.preventDefault();
-  hint.textContent = (lang==="ru")
-    ? "Готово ✅ (Шаг 2 подключит отправку в Telegram)"
-    : "Тайёр ✅ (Қадами 2: Telegram)";
-  form.reset();
-});
 
-// reveal animations on scroll
-const io = new IntersectionObserver((entries)=>{
-  entries.forEach(en=>{
-    if(en.isIntersecting) en.target.classList.add("show");
+if (form) {
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (hint) {
+      hint.textContent = (lang === "ru")
+        ? "Готово ✅ (Шаг 2 подключит отправку в Telegram)"
+        : "Тайёр ✅ (Қадами 2: Telegram)";
+    }
+    form.reset();
   });
-},{threshold:0.12});
+}
 
-document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(en => {
+    if (en.isIntersecting) en.target.classList.add("show");
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+const topBar = document.querySelector(".top");
+window.addEventListener("scroll", () => {
+  if (!topBar) return;
+  if (window.scrollY > 16) {
+    topBar.style.boxShadow = "0 10px 30px rgba(37,99,235,.08)";
+  } else {
+    topBar.style.boxShadow = "none";
+  }
+});
