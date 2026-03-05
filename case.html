@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SLC Case</title>
+  <style>
+    :root{
+      --bg:#f5f1e8;
+      --panel:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --navy:#14243d;
+      --navy2:#1b3153;
+      --line:rgba(20,36,61,.08);
+      --shadow:0 20px 60px rgba(17,24,39,.10);
+      --radius:20px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,Arial,sans-serif;
+      background:linear-gradient(180deg,#f5f1e8,#fbf9f4);
+      color:var(--text);
+      padding:24px;
+    }
+
+    .wrap{
+      max-width:1000px;
+      margin:0 auto;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:20px;
+      flex-wrap:wrap;
+    }
+
+    .title{
+      font-size:28px;
+      font-weight:800;
+    }
+
+    .btn{
+      border:none;
+      background:linear-gradient(135deg,var(--navy),var(--navy2));
+      color:#fff;
+      padding:12px 16px;
+      border-radius:14px;
+      cursor:pointer;
+      font-weight:700;
+      text-decoration:none;
+      display:inline-block;
+    }
+
+    .card{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:22px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    label{
+      display:block;
+      margin-bottom:14px;
+      font-size:14px;
+      font-weight:600;
+      color:#374151;
+    }
+
+    input, textarea, select{
+      width:100%;
+      margin-top:8px;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      outline:none;
+      font:inherit;
+      background:#fff;
+    }
+
+    textarea{
+      min-height:140px;
+      resize:vertical;
+    }
+
+    input:focus, textarea:focus, select:focus{
+      border-color:rgba(20,36,61,.28);
+      box-shadow:0 0 0 4px rgba(20,36,61,.08);
+    }
+
+    .full{
+      grid-column:1 / -1;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      margin-top:10px;
+      flex-wrap:wrap;
+    }
+
+    .save{
+      background:linear-gradient(135deg,var(--navy),var(--navy2));
+    }
+
+    .danger{
+      background:#dc2626;
+    }
+
+    .hint{
+      margin-top:14px;
+      color:var(--muted);
+      min-height:18px;
+      font-size:14px;
+    }
+
+    @media (max-width: 760px){
+      body{padding:12px}
+      .grid{grid-template-columns:1fr}
+      .full{grid-column:auto}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="title">Карточка дела</div>
+      <a class="btn" href="admin-dashboard.html">← Назад в админку</a>
+    </div>
+
+    <div class="card">
+      <form id="caseForm">
+        <div class="grid">
+          <label>
+            ID
+            <input id="caseId" disabled />
+          </label>
+
+          <label>
+            Статус
+            <select id="status">
+              <option value="new">new</option>
+              <option value="in_progress">in_progress</option>
+              <option value="done">done</option>
+            </select>
+          </label>
+
+          <label>
+            Имя
+            <input id="first_name" />
+          </label>
+
+          <label>
+            Фамилия
+            <input id="last_name" />
+          </label>
+
+          <label>
+            Телефон
+            <input id="phone" />
+          </label>
+
+          <label>
+            Email
+            <input id="email" />
+          </label>
+
+          <label class="full">
+            Тема
+            <input id="topic" />
+          </label>
+
+          <label class="full">
+            Описание
+            <textarea id="message"></textarea>
+          </label>
+
+          <label class="full">
+            Заметка администратора
+            <textarea id="admin_note"></textarea>
+          </label>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn save">Сохранить изменения</button>
+          <button type="button" class="btn danger" id="deleteBtn">Удалить заявку</button>
+        </div>
+
+        <div class="hint" id="caseHint"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = "https://slc-telegram.printtexttj.workers.dev";
+    const token = localStorage.getItem("slc_admin_token");
+
+    if (!token) {
+      window.location.href = "admin.html";
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    if (!id) {
+      window.location.href = "admin-dashboard.html";
+    }
+
+    const hint = document.getElementById("caseHint");
+
+    async function loadCase() {
+      hint.textContent = "Загружаем...";
+
+      try {
+        const res = await fetch(API_BASE + "/admin-request?id=" + encodeURIComponent(id), {
+          headers: {
+            "Authorization": "Bearer " + token
+          }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error || "Load failed");
+        }
+
+        const r = data.request;
+
+        document.getElementById("caseId").value = r.id || "";
+        document.getElementById("status").value = r.status || "new";
+        document.getElementById("first_name").value = r.first_name || "";
+        document.getElementById("last_name").value = r.last_name || "";
+        document.getElementById("phone").value = r.phone || "";
+        document.getElementById("email").value = r.email || "";
+        document.getElementById("topic").value = r.topic || "";
+        document.getElementById("message").value = r.message || "";
+        document.getElementById("admin_note").value = r.admin_note || "";
+
+        hint.textContent = "Загружено";
+      } catch (err) {
+        hint.textContent = "Ошибка загрузки";
+      }
+    }
+
+    document.getElementById("caseForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      hint.textContent = "Сохраняем...";
+
+      try {
+        const payload = {
+          id: Number(id),
+          status: document.getElementById("status").value,
+          first_name: document.getElementById("first_name").value.trim(),
+          last_name: document.getElementById("last_name").value.trim(),
+          phone: document.getElementById("phone").value.trim(),
+          email: document.getElementById("email").value.trim(),
+          topic: document.getElementById("topic").value.trim(),
+          message: document.getElementById("message").value.trim(),
+          admin_note: document.getElementById("admin_note").value.trim()
+        };
+
+        const res = await fetch(API_BASE + "/admin-request", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error || "Save failed");
+        }
+
+        hint.textContent = "Сохранено ✅";
+      } catch (err) {
+        hint.textContent = "Ошибка сохранения";
+      }
+    });
+
+    document.getElementById("deleteBtn").addEventListener("click", async () => {
+      if (!confirm("Удалить заявку?")) return;
+
+      try {
+        const res = await fetch(API_BASE + "/admin-request", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify({ id: Number(id) })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error || "Delete failed");
+        }
+
+        window.location.href = "admin-dashboard.html";
+      } catch (err) {
+        hint.textContent = "Ошибка удаления";
+      }
+    });
+
+    loadCase();
+  </script>
+</body>
+</html>
