@@ -1,5 +1,5 @@
 const WORKER_URL = "https://slc-telegram.printtexttj.workers.dev";
-const FORM_SECRET = "slc_secret_2026_!";
+const FORM_SECRET = "Shawn19012003#";
 
 const dict = {
   ru: {
@@ -162,12 +162,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (hint) {
         hint.textContent = payload.lang === "ru"
-          ? "Ошибка ❌ Заявка не отправилась"
-          : "Хато ❌ Дархост фиристода нашуд";
+          ? "Ошибка ❌ " + (error.message || "Заявка не отправилась")
+          : "Хато ❌ " + (error.message || "Дархост фиристода нашуд");
       } else {
         alert(payload.lang === "ru"
-          ? "Ошибка ❌ Заявка не отправилась"
-          : "Хато ❌ Дархост фиристода нашуд");
+          ? "Ошибка ❌ " + (error.message || "Заявка не отправилась")
+          : "Хато ❌ " + (error.message || "Дархост фиристода нашуд"));
       }
     }
   });
