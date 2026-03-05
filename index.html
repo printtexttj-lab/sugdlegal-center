@@ -1,283 +1,583 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SLC — Юридическая уверенность вашего бизнеса</title>
-  <meta name="description" content="SLC — юридические услуги для бизнеса: регистрация, договоры, сделки, суды, абонентское обслуживание." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SLC — Юридическая уверенность бизнеса</title>
+
+<link rel="stylesheet" href="styles.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
-  <!-- Background FX -->
-  <div class="bg">
-    <div class="blob b1"></div>
-    <div class="blob b2"></div>
-    <div class="grid"></div>
-  </div>
 
-  <!-- Top bar -->
-  <header class="top">
-    <div class="container top-inner">
-      <div class="brand">
-        <div class="logo">SLC</div>
-        <div class="brand-text">
-          <div class="brand-title">Sugd Legal Center</div>
-          <div class="brand-sub" data-i18n="tagline">Юридическая уверенность вашего бизнеса</div>
-        </div>
-      </div>
+<div class="bg">
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="grid"></div>
+</div>
 
-      <div class="top-actions">
-        <a class="chip" href="tel:+992929312800">+992-92-931-2800</a>
-        <a class="chip" href="mailto:sughdlegalcenter@gmail.com">sughdlegalcenter@gmail.com</a>
+<header class="top">
 
-        <button class="lang" id="langBtn" type="button" aria-label="Language switch">
-          <span id="langLabel">RU</span>
-          <span class="lang-dot"></span>
-          <span id="langLabel2">TJ</span>
-        </button>
+<div class="container top-inner">
 
-        <a class="btn ghost" href="#services" data-i18n="servicesBtn">Услуги</a>
-        <a class="btn" href="#contact" data-i18n="contactBtn">Оставить заявку</a>
-      </div>
-    </div>
-  </header>
+<div class="brand">
 
-  <!-- Hero -->
-  <main>
-    <section class="hero">
-      <div class="container hero-inner">
-        <div class="hero-left reveal">
-          <div class="badge">
-            <span>⚖️</span>
-            <span data-i18n="welcome">Добро пожаловать в SLC</span>
-          </div>
+<div class="logo">
+SLC
+</div>
 
-          <h1 class="h1" data-i18n="heroTitle">
-            Предприниматель должен заниматься делом, а не разбираться с законом.
-          </h1>
+<div>
 
-          <p class="lead" data-i18n="heroText">
-            Мы берём на себя юридическую сторону вашего бизнеса — чтобы вы работали спокойно, уверенно и без рисков.
-          </p>
+<div class="brand-title">
+Sugd Legal Center
+</div>
 
-          <div class="bullets">
-            <div class="bullet" data-i18n="b1">⚙️ Простые решения сложных юридических вопросов</div>
-            <div class="bullet" data-i18n="b2">🤝 Максимум надёжности и прозрачности</div>
-            <div class="bullet" data-i18n="b3">📈 Сопровождение, консультации, защита</div>
-          </div>
+<div class="brand-sub" data-i18n="tagline">
+Юридическая уверенность вашего бизнеса
+</div>
 
-          <div class="cta">
-            <a class="btn big" href="#contact" data-i18n="cta1">Оставить заявку</a>
-            <a class="btn ghost big" href="#services" data-i18n="cta2">Посмотреть услуги</a>
-          </div>
+</div>
 
-          <div class="mini" data-i18n="forWhomTitle">Мы работаем для:</div>
-          <div class="pills">
-            <span class="pill" data-i18n="p1">ООО</span>
-            <span class="pill" data-i18n="p2">ЗАО</span>
-            <span class="pill" data-i18n="p3">ОАО</span>
-            <span class="pill" data-i18n="p4">ИП</span>
-          </div>
-        </div>
+</div>
 
-        <div class="hero-right reveal">
-          <div class="card glass">
-            <div class="card-title" data-i18n="quickTitle">Быстрый контакт</div>
-            <div class="card-text" data-i18n="quickText">
-              Оставьте заявку — мы свяжемся с вами и предложим решение.
-            </div>
-            <div class="card-row">
-              <div class="stat">
-                <div class="stat-num">24/7</div>
-                <div class="stat-label" data-i18n="stat1">Коммуникация</div>
-              </div>
-              <div class="stat">
-                <div class="stat-num">100%</div>
-                <div class="stat-label" data-i18n="stat2">Прозрачность</div>
-              </div>
-              <div class="stat">
-                <div class="stat-num">SLC</div>
-                <div class="stat-label" data-i18n="stat3">Ваш юридический партнёр</div>
-              </div>
-            </div>
 
-            <a class="btn w100" href="#contact" data-i18n="sendReq">Отправить заявку</a>
-          </div>
+<div class="top-actions">
 
-          <div class="floating glass">
-            <div class="float-icon">🧾</div>
-            <div>
-              <div class="float-title" data-i18n="floatTitle">Договоры и сделки</div>
-              <div class="float-sub" data-i18n="floatSub">Анализ, защита, сопровождение</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+<a class="chip" href="tel:+992929312800">
++992-92-931-2800
+</a>
 
-    <!-- Services -->
-    <section class="section" id="services">
-      <div class="container">
-        <div class="section-head reveal">
-          <h2 class="h2" data-i18n="servicesTitle">Что мы предлагаем</h2>
-          <p class="sub" data-i18n="servicesSub">Услуги оформлены отдельными блоками — удобно и понятно.</p>
-        </div>
+<a class="chip" href="mailto:sughdlegalcenter@gmail.com">
+sughdlegalcenter@gmail.com
+</a>
 
-        <div class="grid3">
-          <div class="svc reveal">
-            <div class="svc-ic">🏢</div>
-            <div class="svc-ttl" data-i18n="s1">Регистрация и ликвидация организаций</div>
-            <div class="svc-txt" data-i18n="s1t">Под ключ, с проверкой рисков и документов.</div>
-          </div>
 
-          <div class="svc reveal">
-            <div class="svc-ic">📝</div>
-            <div class="svc-ttl" data-i18n="s2">Составление и анализ договоров</div>
-            <div class="svc-txt" data-i18n="s2t">Условия, ответственность, защита интересов.</div>
-          </div>
+<button class="lang" id="langBtn">
 
-          <div class="svc reveal">
-            <div class="svc-ic">🤝</div>
-            <div class="svc-ttl" data-i18n="s3">Сопровождение сделок</div>
-            <div class="svc-txt" data-i18n="s3t">От переговоров до подписания и исполнения.</div>
-          </div>
+<span id="langLabel">RU</span>
 
-          <div class="svc reveal">
-            <div class="svc-ic">📊</div>
-            <div class="svc-ttl" data-i18n="s4">Консультации (налоги/труд/корпоративное)</div>
-            <div class="svc-txt" data-i18n="s4t">Чётко, практично, с планом действий.</div>
-          </div>
+<span class="lang-dot"></span>
 
-          <div class="svc reveal">
-            <div class="svc-ic">🛃</div>
-            <div class="svc-ttl" data-i18n="s5">Содействие в таможенном оформлении</div>
-            <div class="svc-txt" data-i18n="s5t">Документы, сопровождение, снижение рисков.</div>
-          </div>
+<span id="langLabel2">TJ</span>
 
-          <div class="svc reveal">
-            <div class="svc-ic">⚖️</div>
-            <div class="svc-ttl" data-i18n="s6">Представительство в судах</div>
-            <div class="svc-txt" data-i18n="s6t">Подготовка, стратегия, защита.</div>
-          </div>
+</button>
 
-          <div class="svc reveal">
-            <div class="svc-ic">🔁</div>
-            <div class="svc-ttl" data-i18n="s7">Абонентское юридическое обслуживание</div>
-            <div class="svc-txt" data-i18n="s7t">Юрист на связи постоянно — выгодно бизнесу.</div>
-          </div>
+<a class="btn ghost" href="#services" data-i18n="servicesBtn">
+Услуги
+</a>
 
-          <div class="svc reveal">
-            <div class="svc-ic">🏠</div>
-            <div class="svc-ttl" data-i18n="s8">Оценка имущества</div>
-            <div class="svc-txt" data-i18n="s8t">Движимое и недвижимое имущество.</div>
-          </div>
+<a class="btn" href="#contact" data-i18n="contactBtn">
+Оставить заявку
+</a>
 
-          <div class="svc reveal">
-            <div class="svc-ic">🧩</div>
-            <div class="svc-ttl" data-i18n="s9">Корпоративное сопровождение</div>
-            <div class="svc-txt" data-i18n="s9t">Внутренние документы, решения, безопасность.</div>
-          </div>
-        </div>
-      </div>
-    </section>
+</div>
 
-    <!-- Contact -->
-    <section class="section" id="contact">
-      <div class="container">
-        <div class="section-head reveal">
-          <h2 class="h2" data-i18n="contactTitle">Оставить заявку</h2>
-          <p class="sub" data-i18n="contactSub">
-            На следующем шаге мы подключим отправку в Telegram через Cloudflare.
-          </p>
-        </div>
+</div>
 
-        <div class="contact-wrap">
-          <form class="form glass reveal" id="leadForm">
-            <div class="row2">
-              <label>
-                <span data-i18n="fn">Имя</span>
-                <input name="firstName" required placeholder="Алекс" />
-              </label>
-              <label>
-                <span data-i18n="ln">Фамилия</span>
-                <input name="lastName" required placeholder="Иванов" />
-              </label>
-            </div>
+</header>
 
-            <div class="row2">
-              <label>
-                <span data-i18n="phone">Телефон</span>
-                <input name="phone" required placeholder="+992..." />
-              </label>
-              <label>
-                <span>Email</span>
-                <input name="email" type="email" placeholder="name@gmail.com" />
-              </label>
-            </div>
 
-            <label>
-              <span data-i18n="topic">Тема</span>
-              <input name="topic" required placeholder="Договор / Суд / Регистрация..." />
-            </label>
 
-            <label>
-              <span data-i18n="msg">Описание</span>
-              <textarea name="message" rows="5" required placeholder="Опишите задачу..."></textarea>
-            </label>
+<main>
 
-            <button class="btn w100 big" type="submit" data-i18n="submit">
-              Отправить
-            </button>
+<section class="hero">
 
-            <div class="hint" id="formHint" data-i18n="hint">
-              Сейчас форма просто показывает “готово”. На шаге 2 подключим Telegram.
-            </div>
-          </form>
+<div class="container hero-inner">
 
-          <div class="side reveal">
-            <div class="glass side-card">
-              <div class="side-title" data-i18n="supportTitle">Поддержка</div>
-              <div class="side-line">
-                📞 <a href="tel:+992929312800">+992-92-931-2800</a>
-              </div>
-              <div class="side-line">
-                ✉️ <a href="mailto:sughdlegalcenter@gmail.com">sughdlegalcenter@gmail.com</a>
-              </div>
-              <div class="divider"></div>
-              <div class="side-title" data-i18n="promiseTitle">SLC</div>
-              <div class="side-text" data-i18n="promiseText">
-                Надёжность, прозрачность, защита ваших интересов.
-              </div>
-            </div>
+<div class="hero-left reveal">
 
-            <div class="glass side-card">
-              <div class="side-title" data-i18n="noteTitle">Важно</div>
-              <div class="side-text" data-i18n="noteText">
-                В шаге 2 мы сделаем так, чтобы каждая заявка уходила в Telegram-бот.
-              </div>
-            </div>
-          </div>
-        </div>
+<div class="badge">
 
-      </div>
-    </section>
+<span>⚖</span>
 
-    <footer class="footer">
-      <div class="container footer-inner">
-        <div>© <span id="year"></span> SLC — <span data-i18n="tagline">Юридическая уверенность вашего бизнеса</span></div>
-        <div class="foot-links">
-          <a href="#services" data-i18n="servicesBtn">Услуги</a>
-          <a href="#contact" data-i18n="contactBtn">Оставить заявку</a>
-        </div>
-      </div>
-    </footer>
-  </main>
+<span data-i18n="welcome">
+Добро пожаловать в SLC
+</span>
 
-  <script src="app.js"></script>
+</div>
+
+
+<h1 class="h1" data-i18n="heroTitle">
+
+Предприниматель должен заниматься делом,
+а не разбираться с законом
+
+</h1>
+
+
+<p class="lead" data-i18n="heroText">
+
+Мы берём на себя юридическую сторону вашего бизнеса,
+чтобы вы могли работать спокойно и без рисков.
+
+</p>
+
+
+<div class="bullets">
+
+<div class="bullet" data-i18n="b1">
+⚙ Простые решения сложных юридических вопросов
+</div>
+
+<div class="bullet" data-i18n="b2">
+🤝 Максимум надёжности и прозрачности
+</div>
+
+<div class="bullet" data-i18n="b3">
+📈 Сопровождение, консультации, защита
+</div>
+
+</div>
+
+
+<div class="cta">
+
+<a class="btn big" href="#contact" data-i18n="cta1">
+Получить консультацию
+</a>
+
+<a class="btn ghost big" href="#services" data-i18n="cta2">
+Наши услуги
+</a>
+
+</div>
+
+
+<div class="mini" data-i18n="forWhomTitle">
+Мы работаем для
+</div>
+
+
+<div class="pills">
+
+<span class="pill">ООО</span>
+
+<span class="pill">ЗАО</span>
+
+<span class="pill">ОАО</span>
+
+<span class="pill">ИП</span>
+
+</div>
+
+</div>
+
+
+
+<div class="hero-right reveal">
+
+<div class="card glass">
+
+<div class="card-title">
+Первичная юридическая консультация
+</div>
+
+<div class="card-text">
+Оставьте заявку — наш юрист свяжется с вами и предложит решение.
+</div>
+
+
+<div class="card-row">
+
+<div class="stat">
+
+<div class="stat-num">
+24/7
+</div>
+
+<div class="stat-label">
+Поддержка клиентов
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-num">
+100%
+</div>
+
+<div class="stat-label">
+Конфиденциальность
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-num">
+SLC
+</div>
+
+<div class="stat-label">
+Юридический партнёр
+</div>
+
+</div>
+
+</div>
+
+
+<a class="btn w100" href="#contact">
+Отправить заявку
+</a>
+
+</div>
+
+
+<div class="floating glass">
+
+<div class="float-icon">
+⚖
+</div>
+
+<div>
+
+<div class="float-title">
+Юридическая защита бизнеса
+</div>
+
+<div class="float-sub">
+Документы, сопровождение, представительство
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<section class="section" id="services">
+
+<div class="container">
+
+<div class="section-head">
+
+<h2 class="h2">
+Наши услуги
+</h2>
+
+<p class="sub">
+Профессиональное юридическое сопровождение бизнеса
+</p>
+
+</div>
+
+
+
+<div class="grid3">
+
+<div class="svc">
+
+<div class="svc-ic">🏢</div>
+
+<div class="svc-ttl">
+Регистрация и ликвидация организаций
+</div>
+
+<div class="svc-txt">
+Полное юридическое сопровождение создания и закрытия компаний
+</div>
+
+</div>
+
+
+<div class="svc">
+
+<div class="svc-ic">📝</div>
+
+<div class="svc-ttl">
+Составление и анализ договоров
+</div>
+
+<div class="svc-txt">
+Защита интересов бизнеса при заключении контрактов
+</div>
+
+</div>
+
+
+<div class="svc">
+
+<div class="svc-ic">🤝</div>
+
+<div class="svc-ttl">
+Сопровождение сделок
+</div>
+
+<div class="svc-txt">
+Юридический контроль коммерческих операций
+</div>
+
+</div>
+
+
+<div class="svc">
+
+<div class="svc-ic">📊</div>
+
+<div class="svc-ttl">
+Налоговое и корпоративное право
+</div>
+
+<div class="svc-txt">
+Консультации по налоговым и корпоративным вопросам
+</div>
+
+</div>
+
+
+<div class="svc">
+
+<div class="svc-ic">⚖</div>
+
+<div class="svc-ttl">
+Представительство в судах
+</div>
+
+<div class="svc-txt">
+Защита интересов бизнеса в судебных процессах
+</div>
+
+</div>
+
+
+<div class="svc">
+
+<div class="svc-ic">🔁</div>
+
+<div class="svc-ttl">
+Юридическое обслуживание бизнеса
+</div>
+
+<div class="svc-txt">
+Абонентское сопровождение компаний
+</div>
+
+</div>
+
+
+<div class="svc">
+
+<div class="svc-ic">🛃</div>
+
+<div class="svc-ttl">
+Таможенное оформление
+</div>
+
+<div class="svc-txt">
+Юридическая помощь при импорте и экспорте товаров
+</div>
+
+</div>
+
+
+<div class="svc">
+
+<div class="svc-ic">🏠</div>
+
+<div class="svc-ttl">
+Оценка имущества
+</div>
+
+<div class="svc-txt">
+Оценка движимого и недвижимого имущества
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<section class="section" id="contact">
+
+<div class="container">
+
+<div class="section-head">
+
+<h2 class="h2">
+Оставить заявку
+</h2>
+
+<p class="sub">
+Наш специалист свяжется с вами для консультации
+</p>
+
+</div>
+
+
+<div class="contact-wrap">
+
+<form class="form glass" id="leadForm">
+
+<div class="row2">
+
+<label>
+
+<span>Имя</span>
+
+<input name="firstName" required>
+
+</label>
+
+
+<label>
+
+<span>Фамилия</span>
+
+<input name="lastName" required>
+
+</label>
+
+</div>
+
+
+<div class="row2">
+
+<label>
+
+<span>Телефон</span>
+
+<input name="phone" required>
+
+</label>
+
+
+<label>
+
+<span>Email</span>
+
+<input name="email">
+
+</label>
+
+</div>
+
+
+<label>
+
+<span>Тема</span>
+
+<input name="topic" required>
+
+</label>
+
+
+<label>
+
+<span>Описание</span>
+
+<textarea name="message" rows="5"></textarea>
+
+</label>
+
+
+<button class="btn w100 big" type="submit">
+Отправить заявку
+</button>
+
+
+<div class="hint">
+Заявка будет отправлена нашему юристу
+</div>
+
+</form>
+
+
+
+<div class="side">
+
+<div class="glass side-card">
+
+<div class="side-title">
+Контакты
+</div>
+
+<div class="side-line">
+📞 +992-92-931-2800
+</div>
+
+<div class="side-line">
+✉ sughdlegalcenter@gmail.com
+</div>
+
+<div class="divider"></div>
+
+<div class="side-text">
+SLC — юридическая уверенность вашего бизнеса
+</div>
+
+</div>
+
+
+<div class="glass side-card">
+
+<div class="side-title">
+Почему выбирают нас
+</div>
+
+<div class="side-text">
+Надёжность, конфиденциальность и профессиональный подход
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<footer class="footer">
+
+<div class="container footer-inner">
+
+<div>
+© 2026 SLC — Юридическая уверенность бизнеса
+</div>
+
+<div class="foot-links">
+
+<a href="#services">
+Услуги
+</a>
+
+<a href="#contact">
+Контакты
+</a>
+
+</div>
+
+</div>
+
+</footer>
+
+
+</main>
+
+<script src="app.js"></script>
+
 </body>
 
 </html>
