@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SLC Admin Panel</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f5f5f5;
+padding:40px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+}
+
+th,td{
+padding:12px;
+border-bottom:1px solid #ddd;
+text-align:left;
+}
+
+th{
+background:#14243d;
+color:white;
+}
+
+button{
+padding:6px 10px;
+border:none;
+cursor:pointer;
+border-radius:4px;
+}
+
+.new{background:#ffc107}
+.closed{background:#28a745;color:white}
+.delete{background:#dc3545;color:white}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>SLC Requests</h2>
+
+<table id="requestsTable">
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Phone</th>
+<th>Topic</th>
+<th>Status</th>
+<th>Actions</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+<script>
+
+const API="https://slc-telegram.printtexttj.workers.dev/admin"
+
+async function loadRequests(){
+
+const res=await fetch(API)
+
+const data=await res.json()
+
+const tbody=document.querySelector("#requestsTable tbody")
+
+tbody.innerHTML=""
+
+data.forEach(r=>{
+
+const tr=document.createElement("tr")
+
+tr.innerHTML=`
+<td>${r.id}</td>
+<td>${r.first_name} ${r.last_name}</td>
+<td>${r.phone}</td>
+<td>${r.topic}</td>
+<td>${r.status}</td>
+<td>
+<button class="new" onclick="updateStatus(${r.id},'new')">New</button>
+<button class="closed" onclick="updateStatus(${r.id},'closed')">Close</button>
+<button class="delete" onclick="deleteReq(${r.id})">Delete</button>
+</td>
+`
+
+tbody.appendChild(tr)
+
+})
+
+}
+
+async function updateStatus(id,status){
+
+await fetch(API,{
+method:"PUT",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({id,status})
+})
+
+loadRequests()
+
+}
+
+async function deleteReq(id){
+
+await fetch(API,{
+method:"DELETE",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({id})
+})
+
+loadRequests()
+
+}
+
+loadRequests()
+
+</script>
+
+</body>
+</html>
