@@ -12,7 +12,6 @@
   --navy2:#1b3153;
   --navy3:#27456f;
   --blueLine:#2c5ea8;
-  --blueGlow:rgba(39,69,111,.14);
 
   --gold:#b08a46;
   --gold2:#d7b978;
@@ -450,7 +449,6 @@ a{color:inherit;text-decoration:none}
   line-height:1.72;
 }
 
-/* blue legal services */
 .services-blue .section-head .h2{
   color:var(--navy);
 }
@@ -474,7 +472,6 @@ a{color:inherit;text-decoration:none}
   color:var(--navy3);
 }
 
-/* valuation gold section */
 .valuation-section{
   padding-top:10px;
 }
