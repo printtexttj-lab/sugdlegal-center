@@ -14,7 +14,15 @@
     .title{font-size:28px;font-weight:700}
     .btn{background:#14243d;color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;text-decoration:none}
     .wrap{max-width:1200px;margin:0 auto;background:#fff;border-radius:16px;overflow:auto;border:1px solid #ddd}
-    .bar{padding:14px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .bar{padding:14px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+    .tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .search{
+      min-width:260px;
+      padding:10px 12px;
+      border:1px solid #ddd;
+      border-radius:10px;
+      outline:none;
+    }
     table{width:100%;border-collapse:collapse;min-width:1100px}
     th,td{padding:12px;border-bottom:1px solid #eee;text-align:left;vertical-align:top}
     th{background:#14243d;color:#fff}
@@ -42,7 +50,10 @@
   <div class="wrap">
     <div class="bar">
       <div>Все заявки с сайта</div>
-      <div id="loadHint">Загружаем...</div>
+      <div class="tools">
+        <input class="search" id="searchInput" placeholder="Поиск: имя, телефон, тема" />
+        <div id="loadHint">Загружаем...</div>
+      </div>
     </div>
 
     <table>
@@ -68,6 +79,8 @@
     const token = localStorage.getItem("slc_admin_token");
     if (!token) window.location.href = "admin.html";
 
+    let allRequests = [];
+
     document.getElementById("logoutBtn").onclick = () => {
       localStorage.removeItem("slc_admin_token");
       window.location.href = "admin.html";
@@ -75,8 +88,9 @@
 
     document.getElementById("refreshBtn").onclick = () => loadRequests();
 
+    document.getElementById("searchInput").addEventListener("input", renderRequests);
+
     async function loadRequests() {
-      const body = document.getElementById("requestsBody");
       const hint = document.getElementById("loadHint");
       hint.textContent = "Загружаем...";
 
@@ -88,36 +102,58 @@
         const data = await res.json();
         if (!res.ok || !data.ok) throw new Error("load failed");
 
-        body.innerHTML = "";
-
-        (data.requests || []).forEach((r) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${r.id}</td>
-            <td>${r.first_name || ""} ${r.last_name || ""}</td>
-            <td>${r.phone || "—"}</td>
-            <td>${r.email || "—"}</td>
-            <td>${r.topic || "—"}</td>
-            <td>${r.message || "—"}</td>
-            <td>${r.status || "new"}</td>
-            <td>${r.created_at || "—"}</td>
-            <td>
-              <div class="actions">
-                <a class="open" href="case.html?id=${r.id}">Open</a>
-                <button class="new" onclick="updateStatus(${r.id}, 'new')">New</button>
-                <button class="progress" onclick="updateStatus(${r.id}, 'in_progress')">In Progress</button>
-                <button class="done" onclick="updateStatus(${r.id}, 'done')">Done</button>
-                <button class="delete" onclick="deleteRequest(${r.id})">Delete</button>
-              </div>
-            </td>
-          `;
-          body.appendChild(tr);
-        });
-
+        allRequests = data.requests || [];
+        renderRequests();
         hint.textContent = "Обновлено";
       } catch (e) {
         hint.textContent = "Ошибка загрузки";
       }
+    }
+
+    function renderRequests() {
+      const body = document.getElementById("requestsBody");
+      const q = (document.getElementById("searchInput").value || "").trim().toLowerCase();
+
+      body.innerHTML = "";
+
+      const filtered = allRequests.filter((r) => {
+        const text = [
+          r.id,
+          r.first_name,
+          r.last_name,
+          r.phone,
+          r.email,
+          r.topic,
+          r.message,
+          r.status
+        ].join(" ").toLowerCase();
+
+        return text.includes(q);
+      });
+
+      filtered.forEach((r) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${r.id}</td>
+          <td>${r.first_name || ""} ${r.last_name || ""}</td>
+          <td>${r.phone || "—"}</td>
+          <td>${r.email || "—"}</td>
+          <td>${r.topic || "—"}</td>
+          <td>${r.message || "—"}</td>
+          <td>${r.status || "new"}</td>
+          <td>${r.created_at || "—"}</td>
+          <td>
+            <div class="actions">
+              <a class="open" href="case.html?id=${r.id}">Open</a>
+              <button class="new" onclick="updateStatus(${r.id}, 'new')">New</button>
+              <button class="progress" onclick="updateStatus(${r.id}, 'in_progress')">In Progress</button>
+              <button class="done" onclick="updateStatus(${r.id}, 'done')">Done</button>
+              <button class="delete" onclick="deleteRequest(${r.id})">Delete</button>
+            </div>
+          </td>
+        `;
+        body.appendChild(tr);
+      });
     }
 
     async function updateStatus(id, status) {
