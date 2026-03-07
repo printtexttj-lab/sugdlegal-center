@@ -3,385 +3,185 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SLC — Юридическая уверенность бизнеса</title>
-  <meta name="description" content="SLC — юридические услуги для бизнеса, сопровождение сделок, суды, документы и оценка имущества." />
+  <title>SLC Admin Dashboard</title>
   <link rel="icon" type="image/png" href="logo.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body{margin:0;font-family:Arial,sans-serif;background:#f5f1e8;padding:20px;color:#111827}
+    .top{max-width:1200px;margin:0 auto 20px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+    .left{display:flex;align-items:center;gap:12px}
+    .logo{width:52px;height:52px;border-radius:14px;background:#fff;border:1px solid #ddd;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .logo img{width:100%;height:100%;object-fit:contain}
+    .title{font-size:28px;font-weight:700}
+    .btn{background:#14243d;color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;text-decoration:none}
+    .wrap{max-width:1200px;margin:0 auto;background:#fff;border-radius:16px;overflow:auto;border:1px solid #ddd}
+    .bar{padding:14px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+    .tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .search{
+      min-width:260px;
+      padding:10px 12px;
+      border:1px solid #ddd;
+      border-radius:10px;
+      outline:none;
+    }
+    table{width:100%;border-collapse:collapse;min-width:1100px}
+    th,td{padding:12px;border-bottom:1px solid #eee;text-align:left;vertical-align:top}
+    th{background:#14243d;color:#fff}
+    .actions{display:flex;gap:6px;flex-wrap:wrap}
+    .open,.new,.progress,.done,.delete{border:none;padding:7px 9px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+    .open{background:#14243d;color:#fff}
+    .new{background:#e5e7eb;color:#111827}
+    .progress{background:#fbbf24;color:#111827}
+    .done{background:#16a34a;color:#fff}
+    .delete{background:#dc2626;color:#fff}
+  </style>
 </head>
 <body>
-
-  <div class="bg">
-    <div class="blob b1"></div>
-    <div class="blob b2"></div>
-    <div class="grid"></div>
+  <div class="top">
+    <div class="left">
+      <div class="logo"><img src="logo.png" alt="SLC Logo"></div>
+      <div class="title">SLC Admin Dashboard</div>
+    </div>
+    <div>
+      <button class="btn" id="refreshBtn">Обновить</button>
+      <button class="btn" id="logoutBtn">Выйти</button>
+    </div>
   </div>
 
-  <header class="top">
-    <div class="container top-inner">
-      <div class="brand">
-        <div class="logo">
-          <img src="logo.png" alt="SLC Logo" />
-        </div>
-        <div>
-          <div class="brand-title">Sugd Legal Center</div>
-          <div class="brand-sub" data-i18n="tagline">Юридическая уверенность вашего бизнеса</div>
-        </div>
-      </div>
-
-      <div class="top-actions">
-        <a class="chip" href="tel:+992929312800">+992-92-931-2800</a>
-        <a class="chip" href="mailto:sughdlegalcenter@gmail.com">sughdlegalcenter@gmail.com</a>
-
-        <button class="lang" id="langBtn" type="button">
-          <span id="langLabel">RU</span>
-          <span class="lang-dot"></span>
-          <span id="langLabel2">TJ</span>
-        </button>
-
-        <a class="btn ghost" href="#services" data-i18n="servicesBtn">Услуги</a>
-        <a class="btn" href="#contact" data-i18n="contactBtn">Оставить заявку</a>
+  <div class="wrap">
+    <div class="bar">
+      <div>Все заявки с сайта</div>
+      <div class="tools">
+        <input class="search" id="searchInput" placeholder="Поиск: имя, телефон, тема" />
+        <div id="loadHint">Загружаем...</div>
       </div>
     </div>
-  </header>
 
-  <main>
-    <section class="hero">
-      <div class="container hero-inner">
-        <div class="hero-left reveal">
-          <div class="badge">
-            <span>⚖</span>
-            <span data-i18n="welcome">Добро пожаловать в SLC</span>
-          </div>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Клиент</th>
+          <th>Телефон</th>
+          <th>Email</th>
+          <th>Тема</th>
+          <th>Описание</th>
+          <th>Статус</th>
+          <th>Дата</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody id="requestsBody"></tbody>
+    </table>
+  </div>
 
-          <h1 class="h1" data-i18n="heroTitle">
-            Предприниматель должен заниматься делом, а не разбираться с законом.
-          </h1>
+  <script>
+    const API_BASE = "https://slc-telegram.printtexttj.workers.dev";
+    const token = localStorage.getItem("slc_admin_token");
+    if (!token) window.location.href = "admin.html";
 
-          <p class="lead" data-i18n="heroText">
-            Мы берём на себя юридическую сторону вашего бизнеса — чтобы вы работали спокойно, уверенно и без лишних рисков.
-          </p>
+    let allRequests = [];
 
-          <div class="bullets">
-            <div class="bullet" data-i18n="b1">⚙ Простые решения сложных юридических вопросов</div>
-            <div class="bullet" data-i18n="b2">🤝 Максимум надёжности и прозрачности</div>
-            <div class="bullet" data-i18n="b3">📈 Сопровождение, консультации, защита</div>
-          </div>
+    document.getElementById("logoutBtn").onclick = () => {
+      localStorage.removeItem("slc_admin_token");
+      window.location.href = "admin.html";
+    };
 
-          <div class="cta">
-            <a class="btn big" href="#contact" data-i18n="cta1">Получить консультацию</a>
-            <a class="btn ghost big" href="#services" data-i18n="cta2">Наши услуги</a>
-          </div>
+    document.getElementById("refreshBtn").onclick = () => loadRequests();
 
-          <div class="mini" data-i18n="forWhomTitle">Мы работаем для</div>
-          <div class="pills">
-            <span class="pill" data-i18n="p1">ООО</span>
-            <span class="pill" data-i18n="p2">ЗАО</span>
-            <span class="pill" data-i18n="p3">ОАО</span>
-            <span class="pill" data-i18n="p4">ИП</span>
-          </div>
-        </div>
+    document.getElementById("searchInput").addEventListener("input", renderRequests);
 
-        <div class="hero-right reveal">
-          <div class="card glass">
-            <div class="card-title" data-i18n="consultTitle">Первичная юридическая консультация</div>
-            <div class="card-text" data-i18n="consultText">
-              Оставьте заявку — мы изучим ваш вопрос и предложим понятное юридическое решение для бизнеса.
+    async function loadRequests() {
+      const hint = document.getElementById("loadHint");
+      hint.textContent = "Загружаем...";
+
+      try {
+        const res = await fetch(API_BASE + "/admin-requests", {
+          headers: { "Authorization": "Bearer " + token }
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.ok) throw new Error("load failed");
+
+        allRequests = data.requests || [];
+        renderRequests();
+        hint.textContent = "Обновлено";
+      } catch (e) {
+        hint.textContent = "Ошибка загрузки";
+      }
+    }
+
+    function renderRequests() {
+      const body = document.getElementById("requestsBody");
+      const q = (document.getElementById("searchInput").value || "").trim().toLowerCase();
+
+      body.innerHTML = "";
+
+      const filtered = allRequests.filter((r) => {
+        const text = [
+          r.id,
+          r.first_name,
+          r.last_name,
+          r.phone,
+          r.email,
+          r.topic,
+          r.message,
+          r.status
+        ].join(" ").toLowerCase();
+
+        return text.includes(q);
+      });
+
+      filtered.forEach((r) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${r.id}</td>
+          <td>${r.first_name || ""} ${r.last_name || ""}</td>
+          <td>${r.phone || "—"}</td>
+          <td>${r.email || "—"}</td>
+          <td>${r.topic || "—"}</td>
+          <td>${r.message || "—"}</td>
+          <td>${r.status || "new"}</td>
+          <td>${r.created_at || "—"}</td>
+          <td>
+            <div class="actions">
+              <a class="open" href="case.html?id=${r.id}">Open</a>
+              <button class="new" onclick="updateStatus(${r.id}, 'new')">New</button>
+              <button class="progress" onclick="updateStatus(${r.id}, 'in_progress')">In Progress</button>
+              <button class="done" onclick="updateStatus(${r.id}, 'done')">Done</button>
+              <button class="delete" onclick="deleteRequest(${r.id})">Delete</button>
             </div>
+          </td>
+        `;
+        body.appendChild(tr);
+      });
+    }
 
-            <div class="card-row">
-              <div class="stat">
-                <div class="stat-num">SLC</div>
-                <div class="stat-label" data-i18n="stat1">Юридический партнёр бизнеса</div>
-              </div>
-              <div class="stat">
-                <div class="stat-num">24/7</div>
-                <div class="stat-label" data-i18n="stat2">Связь и сопровождение</div>
-              </div>
-              <div class="stat">
-                <div class="stat-num">100%</div>
-                <div class="stat-label" data-i18n="stat3">Конфиденциальность</div>
-              </div>
-            </div>
+    async function updateStatus(id, status) {
+      await fetch(API_BASE + "/admin-requests", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ id, status })
+      });
+      loadRequests();
+    }
 
-            <a class="btn w100" href="#contact" data-i18n="sendReq">Отправить заявку</a>
-          </div>
+    async function deleteRequest(id) {
+      if (!confirm("Удалить заявку?")) return;
+      await fetch(API_BASE + "/admin-requests", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ id })
+      });
+      loadRequests();
+    }
 
-          <div class="floating glass">
-            <div class="float-icon">§</div>
-            <div>
-              <div class="float-title" data-i18n="floatTitle">Юридическая защита бизнеса</div>
-              <div class="float-sub" data-i18n="floatSub">Документы, сопровождение, представительство</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="about">
-      <div class="container">
-        <div class="section-head reveal">
-          <h2 class="h2" data-i18n="aboutTitle">О компании</h2>
-          <p class="sub" data-i18n="aboutSub">
-            SLC сопровождает предпринимателей и компании, помогая выстраивать деятельность спокойно, законно и системно.
-          </p>
-        </div>
-
-        <div class="contact-wrap">
-          <div class="glass side-card reveal">
-            <div class="side-title" data-i18n="aboutBlock1Title">Наша роль</div>
-            <div class="side-text" data-i18n="aboutBlock1Text">
-              Мы помогаем бизнесу не тратить время на сложные юридические процессы, а сосредоточиться на развитии, операционной работе и заключении сделок.
-            </div>
-          </div>
-
-          <div class="glass side-card reveal">
-            <div class="side-title" data-i18n="aboutBlock2Title">Наш подход</div>
-            <div class="side-text" data-i18n="aboutBlock2Text">
-              Простое объяснение сложных вопросов, аккуратная правовая оценка рисков, подготовка документов и сопровождение до результата.
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section services-blue" id="services">
-      <div class="container">
-        <div class="section-head reveal">
-          <h2 class="h2" data-i18n="servicesTitle">Юридические услуги</h2>
-          <p class="sub" data-i18n="servicesSub">
-            Профессиональное сопровождение бизнеса на каждом этапе — от регистрации до судебной защиты.
-          </p>
-        </div>
-
-        <div class="grid3">
-          <div class="svc svc-blue reveal">
-            <div class="svc-ic">🏢</div>
-            <div class="svc-ttl" data-i18n="s1">Регистрация и ликвидация организаций</div>
-            <div class="svc-txt" data-i18n="s1t">Подготовка документов, сопровождение процедур и правовая безопасность.</div>
-          </div>
-
-          <div class="svc svc-blue reveal">
-            <div class="svc-ic">📝</div>
-            <div class="svc-ttl" data-i18n="s2">Составление и анализ договоров</div>
-            <div class="svc-txt" data-i18n="s2t">Проверка условий, снижение рисков и защита интересов бизнеса.</div>
-          </div>
-
-          <div class="svc svc-blue reveal">
-            <div class="svc-ic">🤝</div>
-            <div class="svc-ttl" data-i18n="s3">Сопровождение сделок</div>
-            <div class="svc-txt" data-i18n="s3t">Юридическая поддержка на всех этапах переговоров и оформления сделок.</div>
-          </div>
-
-          <div class="svc svc-blue reveal">
-            <div class="svc-ic">📊</div>
-            <div class="svc-ttl" data-i18n="s4">Налоговое, трудовое и корпоративное право</div>
-            <div class="svc-txt" data-i18n="s4t">Консультации и практические решения для бизнеса и руководителей.</div>
-          </div>
-
-          <div class="svc svc-blue reveal">
-            <div class="svc-ic">🛃</div>
-            <div class="svc-ttl" data-i18n="s5">Содействие в таможенном оформлении товаров</div>
-            <div class="svc-txt" data-i18n="s5t">Поддержка в оформлении документов и снижении сопутствующих рисков.</div>
-          </div>
-
-          <div class="svc svc-blue reveal">
-            <div class="svc-ic">⚖</div>
-            <div class="svc-ttl" data-i18n="s6">Представительство в судах</div>
-            <div class="svc-txt" data-i18n="s6t">Защита интересов клиента, подготовка процессуальных документов и позиция по делу.</div>
-          </div>
-
-          <div class="svc svc-blue reveal">
-            <div class="svc-ic">🔁</div>
-            <div class="svc-ttl" data-i18n="s7">Абонентское юридическое обслуживание</div>
-            <div class="svc-txt" data-i18n="s7t">Постоянное правовое сопровождение бизнеса без необходимости держать штатного юриста.</div>
-          </div>
-
-          <div class="svc svc-blue reveal">
-            <div class="svc-ic">📁</div>
-            <div class="svc-ttl" data-i18n="s9">Подготовка правовой документации</div>
-            <div class="svc-txt" data-i18n="s9t">Внутренние документы компании, деловая документация и правовые заключения.</div>
-          </div>
-
-          <div class="svc svc-blue reveal">
-            <div class="svc-ic">📌</div>
-            <div class="svc-ttl" data-i18n="s10">Индивидуальное юридическое сопровождение</div>
-            <div class="svc-txt" data-i18n="s10t">Подход под задачу клиента: консультации, документы, защита и сопровождение.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section valuation-section" id="valuation">
-      <div class="container">
-        <div class="valuation-shell reveal">
-          <div class="valuation-top">
-            <div class="valuation-badge" data-i18n="valuationBadge">Специальное направление</div>
-            <h2 class="valuation-title" data-i18n="valuationTitle">Оценка имущества</h2>
-            <p class="valuation-sub" data-i18n="valuationSub">
-              Профессиональная оценка имущества для бизнеса и частных задач с аккуратным подходом, понятной структурой и сопровождением.
-            </p>
-          </div>
-
-          <div class="valuation-grid">
-            <div class="valuation-card reveal">
-              <div class="valuation-card-icon">🚗</div>
-              <div class="valuation-card-title" data-i18n="movableTitle">Оценка движимого имущества</div>
-              <div class="valuation-card-text" data-i18n="movableText">
-                Оценка транспорта, оборудования, техники, мебели, производственных активов и другого движимого имущества.
-              </div>
-
-              <div class="valuation-list">
-                <div class="valuation-list-item" data-i18n="movable1">Транспорт и спецтехника</div>
-                <div class="valuation-list-item" data-i18n="movable2">Оборудование и техника</div>
-                <div class="valuation-list-item" data-i18n="movable3">Имущество для бизнеса</div>
-              </div>
-            </div>
-
-            <div class="valuation-card reveal">
-              <div class="valuation-card-icon">🏢</div>
-              <div class="valuation-card-title" data-i18n="immovableTitle">Оценка недвижимого имущества</div>
-              <div class="valuation-card-text" data-i18n="immovableText">
-                Оценка жилой, коммерческой и иной недвижимости для сделок, учёта, анализа и частных задач.
-              </div>
-
-              <div class="valuation-list">
-                <div class="valuation-list-item" data-i18n="immovable1">Жилая недвижимость</div>
-                <div class="valuation-list-item" data-i18n="immovable2">Коммерческие объекты</div>
-                <div class="valuation-list-item" data-i18n="immovable3">Здания, помещения, участки</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="valuation-cta">
-            <a class="btn gold-btn big" href="#contact" data-i18n="valuationCta">Оставить заявку на оценку имущества</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="why">
-      <div class="container">
-        <div class="section-head reveal">
-          <h2 class="h2" data-i18n="whyTitle">Почему выбирают SLC</h2>
-          <p class="sub" data-i18n="whySub">
-            Мы делаем юридическую работу понятной, аккуратной и удобной для предпринимателя.
-          </p>
-        </div>
-
-        <div class="grid3">
-          <div class="svc reveal">
-            <div class="svc-ic">🔒</div>
-            <div class="svc-ttl" data-i18n="w1">Конфиденциальность</div>
-            <div class="svc-txt" data-i18n="w1t">Данные клиентов и детали дел обрабатываются с высокой степенью приватности.</div>
-          </div>
-
-          <div class="svc reveal">
-            <div class="svc-ic">📚</div>
-            <div class="svc-ttl" data-i18n="w2">Понятная подача</div>
-            <div class="svc-txt" data-i18n="w2t">Мы объясняем правовые вопросы простым языком без лишней сложности.</div>
-          </div>
-
-          <div class="svc reveal">
-            <div class="svc-ic">🛡</div>
-            <div class="svc-ttl" data-i18n="w3">Ориентация на защиту интересов</div>
-            <div class="svc-txt" data-i18n="w3t">Каждое решение строится с учётом рисков, безопасности и практической пользы для клиента.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="contact">
-      <div class="container">
-        <div class="section-head reveal">
-          <h2 class="h2" data-i18n="contactTitle">Оставить заявку</h2>
-          <p class="sub" data-i18n="contactSub">
-            Заполните форму, и ваша заявка сразу поступит нашей команде.
-          </p>
-        </div>
-
-        <div class="contact-wrap">
-          <form class="form glass reveal" id="leadForm">
-            <div class="row2">
-              <label>
-                <span data-i18n="fn">Имя</span>
-                <input name="firstName" required />
-              </label>
-
-              <label>
-                <span data-i18n="ln">Фамилия</span>
-                <input name="lastName" required />
-              </label>
-            </div>
-
-            <div class="row2">
-              <label>
-                <span data-i18n="phone">Телефон</span>
-                <input name="phone" required />
-              </label>
-
-              <label>
-                <span data-i18n="emailLabel">Email</span>
-                <input name="email" type="email" />
-              </label>
-            </div>
-
-            <label>
-              <span data-i18n="topic">Тема</span>
-              <input name="topic" required />
-            </label>
-
-            <label>
-              <span data-i18n="msg">Описание</span>
-              <textarea name="message" rows="5" required></textarea>
-            </label>
-
-            <button class="btn w100 big" type="submit" data-i18n="submit">
-              Отправить заявку
-            </button>
-
-            <div class="hint" id="formHint" data-i18n="hint">
-              Заявка будет отправлена нашей команде
-            </div>
-          </form>
-
-          <div class="side reveal">
-            <div class="glass side-card">
-              <div class="side-title" data-i18n="supportTitle">Контакты</div>
-              <div class="side-line">📞 <a href="tel:+992929312800">+992-92-931-2800</a></div>
-              <div class="side-line">✉️ <a href="mailto:sughdlegalcenter@gmail.com">sughdlegalcenter@gmail.com</a></div>
-              <div class="divider"></div>
-              <div class="side-text" data-i18n="supportText">
-                Мы готовы рассмотреть ваш запрос и предложить подходящий формат юридического сопровождения.
-              </div>
-            </div>
-
-            <div class="glass side-card">
-              <div class="side-title" data-i18n="promiseTitle">SLC</div>
-              <div class="side-text" data-i18n="promiseText">
-                Юридическая уверенность, прозрачность работы и защита интересов вашего бизнеса.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="container footer-inner">
-        <div>© <span id="year"></span> SLC — <span data-i18n="tagline">Юридическая уверенность вашего бизнеса</span></div>
-        <div class="foot-links">
-          <a href="#about" data-i18n="aboutLink">О компании</a>
-          <a href="#services" data-i18n="servicesBtn">Услуги</a>
-          <a href="#valuation" data-i18n="valuationNav">Оценка имущества</a>
-          <a href="#contact" data-i18n="contactBtn">Оставить заявку</a>
-        </div>
-      </div>
-    </footer>
-  </main>
-
-  <script src="app.js"></script>
+    loadRequests();
+  </script>
 </body>
 </html>
