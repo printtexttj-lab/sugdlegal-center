@@ -201,6 +201,7 @@
       display:flex;
       gap:8px;
       flex-wrap:wrap;
+      align-items:center;
     }
     .small-btn{
       border:none;
@@ -216,8 +217,13 @@
       background:#14243d;
       color:#fff;
     }
+    .small-btn.gold{
+      background:linear-gradient(135deg,#b08a46,#d7b978);
+      color:#2a2115;
+    }
     .small-btn.delete{
       background:#dc2626;
+      color:#fff;
     }
     @media (max-width:760px){
       body{padding:12px}
@@ -401,8 +407,10 @@
               <div class="file-date">${file.uploaded_at || ""}</div>
             </div>
             <div class="file-actions">
-              <a class="small-btn" href="${API_BASE}${file.file_url}" target="_blank">Открыть</a>
-              <button class="small-btn delete" onclick="deleteFile(${file.id})">Удалить</button>
+              <a class="small-btn" href="${API_BASE}${file.file_url}" target="_blank">Open</a>
+              <a class="small-btn gold" href="${API_BASE}${file.file_url}" download="${file.file_name}">Download</a>
+              <button class="small-btn" onclick="renameFile(${file.id}, '${String(file.file_name || "").replace(/'/g, "\\'")}')">Rename</button>
+              <button class="small-btn delete" onclick="deleteFile(${file.id})">Delete</button>
             </div>
           `;
 
@@ -542,7 +550,37 @@
       }
     }
 
+    async function renameFile(fileId, oldName) {
+      const newName = prompt("Новое имя файла:", oldName || "");
+      if (!newName) return;
+
+      try {
+        const res = await fetch(API_BASE + "/admin-file", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify({
+            id: fileId,
+            file_name: newName.trim()
+          })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error || "Rename failed");
+        }
+
+        loadFiles();
+      } catch (err) {
+        uploadHint.textContent = "Ошибка переименования файла";
+      }
+    }
+
     window.deleteFile = deleteFile;
+    window.renameFile = renameFile;
 
     loadCase();
     loadFiles();
