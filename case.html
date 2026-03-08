@@ -33,7 +33,7 @@
       padding:24px;
     }
     .wrap{
-      max-width:1040px;
+      max-width:1100px;
       margin:0 auto;
     }
     .topbar{
@@ -81,8 +81,15 @@
       text-decoration:none;
       display:inline-block;
     }
+    .btn:hover{
+      filter:brightness(1.03);
+    }
     .danger{
       background:#dc2626;
+    }
+    .gold{
+      background:linear-gradient(135deg,var(--gold),#d7b978);
+      color:#2a2115;
     }
     .card{
       background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(247,243,235,.98));
@@ -92,12 +99,19 @@
       padding:24px;
       position:relative;
       overflow:hidden;
+      margin-bottom:18px;
     }
     .card::before{
       content:"";
       position:absolute;
       left:0;top:0;right:0;height:4px;
       background:linear-gradient(90deg,var(--gold),#d7b978);
+    }
+    .section-title{
+      font-size:22px;
+      font-weight:800;
+      margin:0 0 16px;
+      letter-spacing:-.3px;
     }
     .grid{
       display:grid;
@@ -144,6 +158,67 @@
       min-height:18px;
       font-size:14px;
     }
+    .upload-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .file-input{
+      flex:1 1 280px;
+      background:#fff;
+    }
+    .files-list{
+      display:grid;
+      gap:10px;
+      margin-top:16px;
+    }
+    .file-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:14px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+      flex-wrap:wrap;
+    }
+    .file-meta{
+      min-width:220px;
+      flex:1 1 300px;
+    }
+    .file-name{
+      font-weight:700;
+      word-break:break-word;
+    }
+    .file-date{
+      color:var(--muted);
+      font-size:13px;
+      margin-top:4px;
+    }
+    .file-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .small-btn{
+      border:none;
+      padding:9px 12px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:13px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:#14243d;
+      color:#fff;
+    }
+    .small-btn.delete{
+      background:#dc2626;
+    }
     @media (max-width:760px){
       body{padding:12px}
       .grid{grid-template-columns:1fr}
@@ -165,6 +240,8 @@
     </div>
 
     <div class="card">
+      <h2 class="section-title">Данные дела</h2>
+
       <form id="caseForm">
         <div class="grid">
           <label>
@@ -225,6 +302,19 @@
         <div class="hint" id="caseHint"></div>
       </form>
     </div>
+
+    <div class="card">
+      <h2 class="section-title">Документы по делу</h2>
+
+      <div class="upload-row">
+        <input class="file-input" type="file" id="fileInput" />
+        <button class="btn gold" type="button" id="uploadBtn">Загрузить документ</button>
+      </div>
+
+      <div class="hint" id="uploadHint"></div>
+
+      <div class="files-list" id="filesList"></div>
+    </div>
   </div>
 
   <script>
@@ -242,10 +332,12 @@
       window.location.href = "admin-dashboard.html";
     }
 
-    const hint = document.getElementById("caseHint");
+    const caseHint = document.getElementById("caseHint");
+    const uploadHint = document.getElementById("uploadHint");
+    const filesList = document.getElementById("filesList");
 
     async function loadCase() {
-      hint.textContent = "Загружаем...";
+      caseHint.textContent = "Загружаем...";
 
       try {
         const res = await fetch(API_BASE + "/admin-request?id=" + encodeURIComponent(id), {
@@ -270,16 +362,63 @@
         document.getElementById("message").value = r.message || "";
         document.getElementById("admin_note").value = r.admin_note || "";
 
-        hint.textContent = "Загружено";
+        caseHint.textContent = "Загружено";
       } catch (err) {
-        hint.textContent = "Ошибка загрузки";
+        caseHint.textContent = "Ошибка загрузки";
+      }
+    }
+
+    async function loadFiles() {
+      filesList.innerHTML = "";
+      uploadHint.textContent = "Загружаем список документов...";
+
+      try {
+        const res = await fetch(API_BASE + "/admin-files?id=" + encodeURIComponent(id), {
+          headers: { "Authorization": "Bearer " + token }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error || "Files load failed");
+        }
+
+        const files = data.files || [];
+
+        if (!files.length) {
+          filesList.innerHTML = `<div class="hint">Документов пока нет.</div>`;
+          uploadHint.textContent = "";
+          return;
+        }
+
+        files.forEach((file) => {
+          const item = document.createElement("div");
+          item.className = "file-item";
+
+          item.innerHTML = `
+            <div class="file-meta">
+              <div class="file-name">${file.file_name || "Файл"}</div>
+              <div class="file-date">${file.uploaded_at || ""}</div>
+            </div>
+            <div class="file-actions">
+              <a class="small-btn" href="${API_BASE}${file.file_url}" target="_blank">Открыть</a>
+              <button class="small-btn delete" onclick="deleteFile(${file.id})">Удалить</button>
+            </div>
+          `;
+
+          filesList.appendChild(item);
+        });
+
+        uploadHint.textContent = "";
+      } catch (err) {
+        uploadHint.textContent = "Ошибка загрузки документов";
       }
     }
 
     document.getElementById("caseForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      hint.textContent = "Сохраняем...";
+      caseHint.textContent = "Сохраняем...";
 
       try {
         const payload = {
@@ -309,9 +448,9 @@
           throw new Error(data.error || "Save failed");
         }
 
-        hint.textContent = "Сохранено ✅";
+        caseHint.textContent = "Сохранено ✅";
       } catch (err) {
-        hint.textContent = "Ошибка сохранения";
+        caseHint.textContent = "Ошибка сохранения";
       }
     });
 
@@ -336,11 +475,77 @@
 
         window.location.href = "admin-dashboard.html";
       } catch (err) {
-        hint.textContent = "Ошибка удаления";
+        caseHint.textContent = "Ошибка удаления";
       }
     });
 
+    document.getElementById("uploadBtn").addEventListener("click", async () => {
+      const input = document.getElementById("fileInput");
+      const file = input.files[0];
+
+      if (!file) {
+        uploadHint.textContent = "Выбери файл для загрузки";
+        return;
+      }
+
+      uploadHint.textContent = "Загружаем документ...";
+
+      try {
+        const formData = new FormData();
+        formData.append("request_id", String(id));
+        formData.append("file", file);
+
+        const res = await fetch(API_BASE + "/admin-upload", {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + token
+          },
+          body: formData
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error || "Upload failed");
+        }
+
+        input.value = "";
+        uploadHint.textContent = "Документ загружен ✅";
+        loadFiles();
+      } catch (err) {
+        uploadHint.textContent = "Ошибка загрузки документа";
+      }
+    });
+
+    async function deleteFile(fileId) {
+      if (!confirm("Удалить документ?")) return;
+
+      try {
+        const res = await fetch(API_BASE + "/admin-file", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify({ id: fileId })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error || "Delete file failed");
+        }
+
+        loadFiles();
+      } catch (err) {
+        uploadHint.textContent = "Ошибка удаления документа";
+      }
+    }
+
+    window.deleteFile = deleteFile;
+
     loadCase();
+    loadFiles();
   </script>
 </body>
 </html>
