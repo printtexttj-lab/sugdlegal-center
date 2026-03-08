@@ -251,6 +251,26 @@ document.addEventListener("DOMContentLoaded", () => {
       : "none";
   });
 
+  const blob1 = document.querySelector(".b1");
+  const blob2 = document.querySelector(".b2");
+  const bgGrid = document.querySelector(".grid");
+
+  window.addEventListener("scroll", () => {
+    const y = window.scrollY || 0;
+
+    if (blob1) {
+      blob1.style.transform = `translate3d(${y * 0.03}px, ${y * 0.08}px, 0) scale(1.04)`;
+    }
+
+    if (blob2) {
+      blob2.style.transform = `translate3d(${y * -0.04}px, ${y * 0.05}px, 0) scale(1.02)`;
+    }
+
+    if (bgGrid) {
+      bgGrid.style.transform = `translateY(${y * 0.06}px)`;
+    }
+  });
+
   const form = document.getElementById("leadForm");
   const hint = document.getElementById("formHint");
 
