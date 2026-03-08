@@ -229,6 +229,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+  const topActions = document.getElementById("topActions");
+  const mobileLinks = document.querySelectorAll(".mobile-nav-link");
+
+  if (mobileMenuBtn && topActions) {
+    mobileMenuBtn.addEventListener("click", () => {
+      topActions.classList.toggle("open");
+    });
+  }
+
+  mobileLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      if (topActions) topActions.classList.remove("open");
+    });
+  });
+
   applyLang(lang);
 
   if ("IntersectionObserver" in window) {
