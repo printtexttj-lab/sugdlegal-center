@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SLC — Юридическая уверенность бизнеса</title>
+  <meta name="description" content="SLC — юридические услуги для бизнеса, сопровождение сделок, суды, документы и оценка имущества." />
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <div class="bg">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="grid"></div>
+  </div>
+
+  <header class="top">
+    <div class="container top-inner">
+      <div class="brand">
+        <div class="logo">
+          <img src="logo.png" alt="SLC Logo" />
+        </div>
+        <div>
+          <div class="brand-title">Sugd Legal Center</div>
+          <div class="brand-sub" data-i18n="tagline">Юридическая уверенность вашего бизнеса</div>
+        </div>
+      </div>
+
+      <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <div class="top-actions" id="topActions">
+        <a class="chip" href="tel:+992111010505">+992-111-01-0505</a>
+        <a class="chip" href="https://wa.me/992111010505" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="chip" href="mailto:sughdlegalcenter@gmail.com">sughdlegalcenter@gmail.com</a>
+
+        <button class="lang" id="langBtn" type="button">
+          <span id="langLabel">RU</span>
+          <span class="lang-dot"></span>
+          <span id="langLabel2">TJ</span>
+        </button>
+
+        <a class="btn ghost mobile-nav-link" href="#services" data-i18n="servicesBtn">Услуги</a>
+        <a class="btn mobile-nav-link" href="#contact" data-i18n="contactBtn">Оставить заявку</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-left reveal">
+          <div class="badge">
+            <span>⚖</span>
+            <span data-i18n="welcome">Добро пожаловать в SLC</span>
+          </div>
+
+          <h1 class="h1" data-i18n="heroTitle">
+            Предприниматель должен заниматься делом, а не разбираться с законом.
+          </h1>
+
+          <p class="lead" data-i18n="heroText">
+            Мы берём на себя юридическую сторону вашего бизнеса — чтобы вы работали спокойно, уверенно и без лишних рисков.
+          </p>
+
+          <div class="bullets">
+            <div class="bullet" data-i18n="b1">⚙ Простые решения сложных юридических вопросов</div>
+            <div class="bullet" data-i18n="b2">🤝 Максимум надёжности и прозрачности</div>
+            <div class="bullet" data-i18n="b3">📈 Сопровождение, консультации, защита</div>
+          </div>
+
+          <div class="cta">
+            <a class="btn big" href="#contact" data-i18n="cta1">Получить консультацию</a>
+            <a class="btn ghost big" href="#services" data-i18n="cta2">Наши услуги</a>
+            <a class="btn ghost big" href="https://wa.me/992111010505" target="_blank" rel="noopener">WhatsApp</a>
+          </div>
+
+          <div class="mini" data-i18n="forWhomTitle">Мы работаем для</div>
+          <div class="pills">
+            <span class="pill" data-i18n="p1">ООО</span>
+            <span class="pill" data-i18n="p2">ЗАО</span>
+            <span class="pill" data-i18n="p3">ОАО</span>
+            <span class="pill" data-i18n="p4">ИП</span>
+          </div>
+        </div>
+
+        <div class="hero-right reveal">
+          <div class="card glass">
+            <div class="card-title" data-i18n="consultTitle">Первичная юридическая консультация</div>
+            <div class="card-text" data-i18n="consultText">
+              Оставьте заявку — мы изучим ваш вопрос и предложим понятное юридическое решение для бизнеса.
+            </div>
+
+            <div class="card-row">
+              <div class="stat">
+                <div class="stat-num">SLC</div>
+                <div class="stat-label" data-i18n="stat1">Юридический партнёр бизнеса</div>
+              </div>
+              <div class="stat">
+                <div class="stat-num">24/7</div>
+                <div class="stat-label" data-i18n="stat2">Связь и сопровождение</div>
+              </div>
+              <div class="stat">
+                <div class="stat-num">100%</div>
+                <div class="stat-label" data-i18n="stat3">Конфиденциальность</div>
+              </div>
+            </div>
+
+            <a class="btn w100" href="#contact" data-i18n="sendReq">Отправить заявку</a>
+          </div>
+
+          <div class="floating glass">
+            <div class="float-icon">§</div>
+            <div>
+              <div class="float-title" data-i18n="floatTitle">Юридическая защита бизнеса</div>
+              <div class="float-sub" data-i18n="floatSub">Документы, сопровождение, представительство</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2 class="h2" data-i18n="aboutTitle">О компании</h2>
+          <p class="sub" data-i18n="aboutSub">
+            SLC сопровождает предпринимателей и компании, помогая выстраивать деятельность спокойно, законно и системно.
+          </p>
+        </div>
+
+        <div class="contact-wrap">
+          <div class="glass side-card reveal">
+            <div class="side-title" data-i18n="aboutBlock1Title">Наша роль</div>
+            <div class="side-text" data-i18n="aboutBlock1Text">
+              Мы помогаем бизнесу не тратить время на сложные юридические процессы, а сосредоточиться на развитии, операционной работе и заключении сделок.
+            </div>
+          </div>
+
+          <div class="glass side-card reveal">
+            <div class="side-title" data-i18n="aboutBlock2Title">Наш подход</div>
+            <div class="side-text" data-i18n="aboutBlock2Text">
+              Простое объяснение сложных вопросов, аккуратная правовая оценка рисков, подготовка документов и сопровождение до результата.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section services-blue" id="services">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2 class="h2" data-i18n="servicesTitle">Юридические услуги</h2>
+          <p class="sub" data-i18n="servicesSub">
+            Профессиональное сопровождение бизнеса на каждом этапе — от регистрации до судебной защиты.
+          </p>
+        </div>
+
+        <div class="grid3">
+          <div class="svc svc-blue reveal">
+            <div class="svc-ic">🏢</div>
+            <div class="svc-ttl" data-i18n="s1">Регистрация и ликвидация организаций</div>
+            <div class="svc-txt" data-i18n="s1t">Подготовка документов, сопровождение процедур и правовая безопасность.</div>
+          </div>
+
+          <div class="svc svc-blue reveal">
+            <div class="svc-ic">📝</div>
+            <div class="svc-ttl" data-i18n="s2">Составление и анализ договоров</div>
+            <div class="svc-txt" data-i18n="s2t">Проверка условий, снижение рисков и защита интересов бизнеса.</div>
+          </div>
+
+          <div class="svc svc-blue reveal">
+            <div class="svc-ic">🤝</div>
+            <div class="svc-ttl" data-i18n="s3">Сопровождение сделок</div>
+            <div class="svc-txt" data-i18n="s3t">Юридическая поддержка на всех этапах переговоров и оформления сделок.</div>
+          </div>
+
+          <div class="svc svc-blue reveal">
+            <div class="svc-ic">📊</div>
+            <div class="svc-ttl" data-i18n="s4">Налоговое, трудовое и корпоративное право</div>
+            <div class="svc-txt" data-i18n="s4t">Консультации и практические решения для бизнеса и руководителей.</div>
+          </div>
+
+          <div class="svc svc-blue reveal">
+            <div class="svc-ic">🛃</div>
+            <div class="svc-ttl" data-i18n="s5">Содействие в таможенном оформлении товаров</div>
+            <div class="svc-txt" data-i18n="s5t">Поддержка в оформлении документов и снижении сопутствующих рисков.</div>
+          </div>
+
+          <div class="svc svc-blue reveal">
+            <div class="svc-ic">⚖</div>
+            <div class="svc-ttl" data-i18n="s6">Представительство в судах</div>
+            <div class="svc-txt" data-i18n="s6t">Защита интересов клиента, подготовка процессуальных документов и позиция по делу.</div>
+          </div>
+
+          <div class="svc svc-blue reveal">
+            <div class="svc-ic">🔁</div>
+            <div class="svc-ttl" data-i18n="s7">Абонентское юридическое обслуживание</div>
+            <div class="svc-txt" data-i18n="s7t">Постоянное правовое сопровождение бизнеса без необходимости держать штатного юриста.</div>
+          </div>
+
+          <div class="svc svc-blue reveal">
+            <div class="svc-ic">📁</div>
+            <div class="svc-ttl" data-i18n="s9">Подготовка правовой документации</div>
+            <div class="svc-txt" data-i18n="s9t">Внутренние документы компании, деловая документация и правовые заключения.</div>
+          </div>
+
+          <div class="svc svc-blue reveal">
+            <div class="svc-ic">📌</div>
+            <div class="svc-ttl" data-i18n="s10">Индивидуальное юридическое сопровождение</div>
+            <div class="svc-txt" data-i18n="s10t">Подход под задачу клиента: консультации, документы, защита и сопровождение.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section valuation-section" id="valuation">
+      <div class="container">
+        <div class="valuation-shell reveal">
+          <div class="valuation-top">
+            <div class="valuation-badge" data-i18n="valuationBadge">Специальное направление</div>
+            <h2 class="valuation-title" data-i18n="valuationTitle">Оценка имущества</h2>
+            <p class="valuation-sub" data-i18n="valuationSub">
+              Профессиональная оценка имущества для бизнеса и частных задач с аккуратным подходом, понятной структурой и сопровождением.
+            </p>
+          </div>
+
+          <div class="valuation-grid">
+            <div class="valuation-card reveal">
+              <div class="valuation-card-icon">🚗</div>
+              <div class="valuation-card-title" data-i18n="movableTitle">Оценка движимого имущества</div>
+              <div class="valuation-card-text" data-i18n="movableText">
+                Оценка транспорта, оборудования, техники, мебели, производственных активов и другого движимого имущества.
+              </div>
+
+              <div class="valuation-list">
+                <div class="valuation-list-item" data-i18n="movable1">Транспорт и спецтехника</div>
+                <div class="valuation-list-item" data-i18n="movable2">Оборудование и техника</div>
+                <div class="valuation-list-item" data-i18n="movable3">Имущество для бизнеса</div>
+              </div>
+            </div>
+
+            <div class="valuation-card reveal">
+              <div class="valuation-card-icon">🏢</div>
+              <div class="valuation-card-title" data-i18n="immovableTitle">Оценка недвижимого имущества</div>
+              <div class="valuation-card-text" data-i18n="immovableText">
+                Оценка жилой, коммерческой и иной недвижимости для сделок, учёта, анализа и частных задач.
+              </div>
+
+              <div class="valuation-list">
+                <div class="valuation-list-item" data-i18n="immovable1">Жилая недвижимость</div>
+                <div class="valuation-list-item" data-i18n="immovable2">Коммерческие объекты</div>
+                <div class="valuation-list-item" data-i18n="immovable3">Здания, помещения, участки</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="valuation-cta">
+            <a class="btn gold-btn big" href="#contact" data-i18n="valuationCta">Оставить заявку на оценку имущества</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="why">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2 class="h2" data-i18n="whyTitle">Почему выбирают SLC</h2>
+          <p class="sub" data-i18n="whySub">
+            Мы делаем юридическую работу понятной, аккуратной и удобной для предпринимателя.
+          </p>
+        </div>
+
+        <div class="grid3">
+          <div class="svc reveal">
+            <div class="svc-ic">🔒</div>
+            <div class="svc-ttl" data-i18n="w1">Конфиденциальность</div>
+            <div class="svc-txt" data-i18n="w1t">Данные клиентов и детали дел обрабатываются с высокой степенью приватности.</div>
+          </div>
+
+          <div class="svc reveal">
+            <div class="svc-ic">📚</div>
+            <div class="svc-ttl" data-i18n="w2">Понятная подача</div>
+            <div class="svc-txt" data-i18n="w2t">Мы объясняем правовые вопросы простым языком без лишней сложности.</div>
+          </div>
+
+          <div class="svc reveal">
+            <div class="svc-ic">🛡</div>
+            <div class="svc-ttl" data-i18n="w3">Ориентация на защиту интересов</div>
+            <div class="svc-txt" data-i18n="w3t">Каждое решение строится с учётом рисков, безопасности и практической пользы для клиента.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2 class="h2" data-i18n="contactTitle">Оставить заявку</h2>
+          <p class="sub" data-i18n="contactSub">
+            Заполните форму, и ваша заявка сразу поступит нашей команде.
+          </p>
+        </div>
+
+        <div class="contact-wrap">
+          <form class="form glass reveal" id="leadForm">
+            <div class="row2">
+              <label>
+                <span data-i18n="fn">Имя</span>
+                <input name="firstName" required />
+              </label>
+
+              <label>
+                <span data-i18n="ln">Фамилия</span>
+                <input name="lastName" required />
+              </label>
+            </div>
+
+            <div class="row2">
+              <label>
+                <span data-i18n="phone">Телефон</span>
+                <input name="phone" required />
+              </label>
+
+              <label>
+                <span data-i18n="emailLabel">Email</span>
+                <input name="email" type="email" />
+              </label>
+            </div>
+
+            <label>
+              <span data-i18n="topic">Тема</span>
+              <input name="topic" required />
+            </label>
+
+            <label>
+              <span data-i18n="msg">Описание</span>
+              <textarea name="message" rows="5" required></textarea>
+            </label>
+
+            <button class="btn w100 big" type="submit" data-i18n="submit">
+              Отправить заявку
+            </button>
+
+            <div class="hint" id="formHint" data-i18n="hint">
+              Заявка будет отправлена нашей команде
+            </div>
+          </form>
+
+          <div class="side reveal">
+            <div class="glass side-card">
+              <div class="side-title" data-i18n="supportTitle">Контакты</div>
+              <div class="side-line">📞 <a href="tel:+992111010505">+992-111-01-0505</a></div>
+              <div class="side-line">💬 <a href="https://wa.me/992111010505" target="_blank" rel="noopener">WhatsApp</a></div>
+              <div class="side-line">✉️ <a href="mailto:sughdlegalcenter@gmail.com">sughdlegalcenter@gmail.com</a></div>
+              <div class="divider"></div>
+              <div class="side-text" data-i18n="supportText">
+                Мы готовы рассмотреть ваш запрос и предложить подходящий формат юридического сопровождения.
+              </div>
+            </div>
+
+            <div class="glass side-card">
+              <div class="side-title" data-i18n="promiseTitle">SLC</div>
+              <div class="side-text" data-i18n="promiseText">
+                Юридическая уверенность, прозрачность работы и защита интересов вашего бизнеса.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div>© <span id="year"></span> SLC — <span data-i18n="tagline">Юридическая уверенность вашего бизнеса</span></div>
+        <div class="foot-links">
+          <a href="#about" data-i18n="aboutLink">О компании</a>
+          <a href="#services" data-i18n="servicesBtn">Услуги</a>
+          <a href="#valuation" data-i18n="valuationNav">Оценка имущества</a>
+          <a href="#contact" data-i18n="contactBtn">Оставить заявку</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
